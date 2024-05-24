@@ -4,24 +4,34 @@
 
 using Microsoft.EntityFrameworkCore;
 
+// FLUENT API 
 public partial class DataBaseContext : DbContext
 {
-    public DataBaseContext(DbContextOptions<DbContext> options) : base(options)
+    public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
     {
 
     }
 
     public virtual DbSet<Customer> Customer { get; set; }
 
-// entidade pode ser tabvela, view, função, storage procedured
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Customer>(entity => {entity.HasKey(k => k.Id);});
-        /* ta criando a entidade cliente; pra cada linha (cada registro/entidade)
-         to falando que a chave primaira vai ser o Id (k (key) é o Id), faço isso pq pode existir chaves compostas */
-        
-        OnModelCreating(modelBuilder);
-    }
-}
 
+        // isso é fluent API, nao usamos anotations
+
+        modelBuilder.Entity<Customer>().HasKey(e => e.CustomerId); // defini a minha primary key da tabela
+
+        // agora vou de atributo a atributo para definir as coisas
+        modelBuilder.Entity<Customer>().Property(p => p.Name).HasMaxLength(50).IsRequired();
+        modelBuilder.Entity<Customer>().Property(p => p.City).HasMaxLength(50).IsRequired();
+        modelBuilder.Entity<Customer>().Property(p => p.State).HasMaxLength(30).IsRequired();
+
+        modelBuilder.Entity<Customer>().Property(p => p.Latitude).HasPrecision(11, 3).IsRequired();
+        // HasPrecision(quantidade de numeros antes do ponto, quantidade de numeros depois do ponto)
+        modelBuilder.Entity<Customer>().Property(p => p.Longitude).HasPrecision(11, 3).IsRequired();
+
+        OnModelCreatingPartial(modelBuilder);
+    }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}

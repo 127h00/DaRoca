@@ -42,7 +42,7 @@ public class CustomerController : ControllerBase
         }
         this.context.Customer.Add(customer); // criaaaaaa
         this.context.SaveChanges(); // se n salvar ele n vai jogar no banco de dados
-        return CreatedAtAction(nameof(GetCustomer), new {id = customer.Id}, customer);
+        return CreatedAtAction(nameof(GetCustomer), new {id = customer.CustomerId}, customer);
         /* CreatedAtAction -> adiciona um novo registro no BD e já retorna pro cliente oq foi criado
         oq significa que foi inserido com sucessp */
     }
