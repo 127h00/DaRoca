@@ -5,59 +5,59 @@ using Microsoft.EntityFrameworkCore.Storage;
 [Route("/[controller]")] // ou seja, quando colocar /customer (porque é o nome desse controller) ele vai usar os endpoints daqui
 // isso aq de cima faz o controller assumir o nome da classe
 [ApiController]
-public class CustomerController : ControllerBase
+public class ProductController : ControllerBase
 {
     private readonly DataBaseContext context; // meu user e senha
 
-    public CustomerController(DataBaseContext context)
+    public ProductController(DataBaseContext context)
     {
         this.context = context;
     }
 
     [HttpGet] // sempre q eu acessar esse recurso com o verbo GET ele vai chamar o método abaixo
-    public ActionResult<IEnumerable<Customer>> GetCustomers()
+    public ActionResult<IEnumerable<Product>> GetProduct()
     {
-        return this.context.Customer.ToList();
+        return this.context.Product.ToList();
         // peguei o usuario e senha . tabela do bd . transformo em lista pq ele nos traz em objeto
     }
 
     [HttpGet("{id}")] // toda vez q no postman ele usarem esse endpoint / id ele vai chamar esse método
 // ActionResult -> """converte""" o return de objeto pra JSON
-    public ActionResult<Customer> GetCustomer(int id)
+    public ActionResult<Product> GetProduct(int id)
     {
-        var customer = this.context.Customer.Find(id);
+        var product = this.context.Product.Find(id);
 
-        if (customer == null)
+        if (product == null)
         {
             return NotFound(); // erro 404
         }
-        return customer;
+        return product;
     }
 
     [HttpPost]
-    public ActionResult<Customer> CreateCustomer(Customer customer)
+    public ActionResult<Product> CreateProduct(Product product)
     {
-        if (customer == null)
+        if (product == null)
         {
             return BadRequest();
         }
-        this.context.Customer.Add(customer); // criaaaaaa
+        this.context.Product.Add(product); // criaaaaaa
         this.context.SaveChanges(); // se n salvar ele n vai jogar no banco de dados
-        return CreatedAtAction(nameof(GetCustomer), new {id = customer.CustomerId}, customer);
+        return CreatedAtAction(nameof(GetProduct), new {id = product.ProductId}, product);
         /* CreatedAtAction -> adiciona um novo registro no BD e já retorna pro cliente oq foi criado
         oq significa que foi inserido com sucessp */
     }
 
     [HttpDelete]
-    public ActionResult<Customer> DeleteCustomer (int id)
+    public ActionResult<Product> DeleteProduct (int id)
     {
-        var customer = this.context.Customer.Find(id);
+        var product = this.context.Product.Find(id);
 
-        if (customer == null)
+        if (product == null)
         {
             return NotFound();
         }
-        this.context.Customer.Remove(customer);
+        this.context.Product.Remove(product);
         this.context.SaveChanges(); 
         return NoContent();
     }
