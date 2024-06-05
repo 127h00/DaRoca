@@ -13,17 +13,18 @@ public class CustomerController : ControllerBase
     {
         this.context = context;
     }
+    
 
     [HttpGet] // sempre q eu acessar esse recurso com o verbo GET ele vai chamar o método abaixo
     public ActionResult<IEnumerable<Customer>> GetCustomers()
     {
         return this.context.Customer.ToList();
         // peguei o usuario e senha . tabela do bd . transformo em lista pq ele nos traz em objeto
+        //           this.context   .   Customer   . ToList()
     }
 
     [HttpGet("{id}")] // toda vez q no postman ele usarem esse endpoint / id ele vai chamar esse método
-// ActionResult -> """converte""" o return de objeto pra JSON
-    public ActionResult<Customer> GetCustomer(int id)
+    public ActionResult<Customer> GetCustomer(int id) // ActionResult -> """converte""" o return de objeto pra JSON
     {
         var customer = this.context.Customer.Find(id);
 
@@ -45,7 +46,7 @@ public class CustomerController : ControllerBase
         this.context.SaveChanges(); // se n salvar ele n vai jogar no banco de dados
         return CreatedAtAction(nameof(GetCustomer), new {id = customer.CustomerId}, customer);
         /* CreatedAtAction -> adiciona um novo registro no BD e já retorna pro cliente oq foi criado
-        oq significa que foi inserido com sucessp */
+        oq significa que foi inserido com sucesso */
     }
 
     [HttpDelete]
