@@ -26,3 +26,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+var teste = new SalesOrder(){
+    OrderId = 1,
+    ProductId = ProductId,
+    Quantity = Quantity,
+    UnitPrice = UnitPrice
+};
