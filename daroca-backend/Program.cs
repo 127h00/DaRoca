@@ -29,7 +29,14 @@ app.Run();
 
 var teste = new SalesOrder(){
     OrderId = 1,
-    ProductId = ProductId,
-    Quantity = Quantity,
-    UnitPrice = UnitPrice
+    CustomerId = 2,
+    OrderDate = DateTime.Now,
+    Status = "teste"
 };
+
+teste.MakeOrder(1, 3, 1, 10);
+teste.MakeOrder(1, 4, 2, 20);
+Console.WriteLine(teste.OrderTotalPrice(1));
+
+teste.MakeOrder(2, 4, 1, 70);
+Console.WriteLine(teste.OrderTotalPrice(2));

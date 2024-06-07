@@ -10,6 +10,11 @@ public class SalesOrder
     public required string Status { get; set; }
     public List<SalesOrderItem> Pedidos { get; set; }
 
+    public SalesOrder()
+    {
+        Pedidos = new List<SalesOrderItem>();
+    }
+
     public void MakeOrder (int OrderId, int ProductId, int Quantity, decimal UnitPrice)
     {
        var salesOrdemItem = new SalesOrderItem()
@@ -22,17 +27,19 @@ public class SalesOrder
        Pedidos.Add(salesOrdemItem);
     }
 
-    public string OrderTotalPrice()
+    public string OrderTotalPrice(int OId)
     {
         var report = new System.Text.StringBuilder();
-        report.AppendLine("Amount\tDate\t\tBalance\t\tNote");
+        report.AppendLine("Order ID\tProduct ID\tQuantity\tUnit Price");
 
         decimal balance = 0;
 
         foreach (var item in this.Pedidos)
         {
-            balance += item.UnitPrice * item.Quantity;
-            report.AppendLine($"{item.OrderId}\t{item.ProductId}\t{item.Quantity}\t{item.Quantity}");
+            if (OId == item.OrderId) {
+                balance += item.UnitPrice * item.Quantity;
+                report.AppendLine($"{item.OrderId}\t\t{item.ProductId}\t\t{item.Quantity}\t\t{item.UnitPrice}");
+            }
         }
         report.AppendLine($"Total price: R${balance}");
 
